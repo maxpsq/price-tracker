@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
 
 def get_tomorrow_midnight_epoch(zi: ZoneInfo):
@@ -16,8 +16,6 @@ def get_tomorrow_midnight_epoch(zi: ZoneInfo):
     # Convertiamo in timestamp Unix (intero)
     return int(midnight.timestamp())    
 
-
-from datetime import datetime, timezone
 
 def date_to_unix_epoch(date_string: str) -> int:
     """

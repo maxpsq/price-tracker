@@ -1,6 +1,4 @@
 from  borsaitaliana import borsa_italiana
-import traceback
-import logging
 """
 class Scraper:
 
