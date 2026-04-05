@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from zoneinfo import ZoneInfo
 import re
 import json
@@ -58,23 +59,30 @@ class Payload:
         # Costruzione del payload
         payload = kwargs.copy()
         payload['Key'] = code + "." + market
-        try:
-            fd = payload['FromDate'] 
-            if fd and isinstance(fd, str):
-                payload['FromDate'] = date_to_unix_epoch(fd)
-        except KeyError:
-            pass
-
-        try:
-            td = payload['ToDate'] 
-            if td and isinstance(td, str):
-                payload['ToDate'] = date_to_unix_epoch(td)
-        except KeyError:
-            pass
-
+        self._normalize_date_range_limit(payload, 'FromDate')
+        self._normalize_date_range_limit(payload, 'ToDate')
         payload = self._set_payload_defaults(payload)
         # Validazione e assegnazione dei dati
         self.data = self._validate_payload(payload)
+
+    def _normalize_date_range_limit(self, payload, key) -> None:
+        try:
+            value = payload[key] 
+            if value and isinstance(value, date):
+                value = value.strftime("%Y-%m-%d")
+            elif value and isinstance(value, datetime):
+                value = value.strftime("%Y-%m-%d")
+            
+            if isinstance(value, str):
+                if value == "":
+                    del payload[key]
+                else:
+                    payload[key] = date_to_unix_epoch(value)
+        #    else:
+        #        del payload[key]
+        except KeyError:
+            pass
+
 
     def _set_payload_defaults(self, data):
         data_and_defaults = {}
@@ -84,6 +92,8 @@ class Payload:
         return data_and_defaults
 
     def _validate_payload(self, data):
+        # Esempio con Valore Errato (ValueError)
+        # p3 = Payload(code="MSFT", market="US", TimeFrame="10y")
         validated_data = {}
 
         for key, value in data.items():
@@ -114,9 +124,8 @@ if __name__ == "__main__":
             code="XS2419364653", 
             market="MOT", 
             TimeFrame="1y",
-            FromDate="2026-03-31"
+            FromDate=""
         )
-        #print("Payload 1 creato con successo:", p1)
         print(p1.json())
 
         # Esempio con Valore Errato (ValueError)

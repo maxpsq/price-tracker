@@ -29,7 +29,7 @@ for date, price in j:
 
 print(len(d1))
 ultimo = j[-1][0]
-l = borsa_italiana(isin, market)
+l = borsa_italiana(isin, market, ultimo)
 for date, price in l:
     d1[date] = price
 
