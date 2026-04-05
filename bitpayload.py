@@ -8,7 +8,7 @@ import logging
 BORSA_ITALIANA_TZI = ZoneInfo("Europe/Rome")
 
 
-class Payload:
+class BitPayload:
     # Lista delle chiavi ammesse
     VALID_KEYS = (
         'SampleTime', 'TimeFrame', 'RequestedDataSetType', 
@@ -114,7 +114,7 @@ class Payload:
 if __name__ == "__main__":
     try:
         # Esempio Corretto
-        p1 = Payload(
+        p1 = BitPayload(
             Key="XS2419364653.MOT", 
             TimeFrame="1y",
             FromDate=""

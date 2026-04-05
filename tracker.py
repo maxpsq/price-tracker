@@ -1,5 +1,5 @@
 import json
-from  borsaitaliana import borsa_italiana
+from  bitclient import borsa_italiana
 import traceback
 import logging
 

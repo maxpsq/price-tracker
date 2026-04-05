@@ -4,7 +4,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 import traceback
 import logging
-from payload import Payload
+from bitpayload import BitPayload
 
 URL = 'https://charts.borsaitaliana.it/charts/services/ChartWService.asmx/GetPricesWithVolume'
 
@@ -31,7 +31,7 @@ def borsa_italiana(tracker_code, from_date: str):
 
     try:
 
-        payload = Payload(
+        payload = BitPayload(
             Key=tracker_code,
             TimeFrame="5y",
             FromDate=from_date
