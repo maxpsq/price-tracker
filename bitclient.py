@@ -54,10 +54,6 @@ def borsa_italiana(tracker_code, from_date: str):
 
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
-    # XS2419364653
-    # XS2579483319
-    # XS1696445516
-    # DE0001102408
     data = borsa_italiana('XS2419364653.MOT', '2026-03-31')
     print( json.dumps(data) )
 
