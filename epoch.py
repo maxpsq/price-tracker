@@ -37,6 +37,8 @@ def date_to_unix_epoch(date_string: str) -> int:
     except ValueError:
         raise ValueError("Formato data non valido. Usa YYYY-MM-DD")
 
+
+
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
     data_test = "2026-04-05"

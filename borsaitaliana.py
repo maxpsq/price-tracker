@@ -27,13 +27,12 @@ HEADERS = {
     "TE": "trailers"
 }
 
-def borsa_italiana(isin, market, from_date: str):
+def borsa_italiana(tracker_code, from_date: str):
 
     try:
 
         payload = Payload(
-            code=isin, 
-            market=market, 
+            Key=tracker_code,
             TimeFrame="5y",
             FromDate=from_date
         )
@@ -59,7 +58,7 @@ if __name__ == "__main__":
     # XS2579483319
     # XS1696445516
     # DE0001102408
-    data = borsa_italiana('XS2419364653','MOT', '2026-03-31')
+    data = borsa_italiana('XS2419364653.MOT', '2026-03-31')
     print( json.dumps(data) )
 
 """

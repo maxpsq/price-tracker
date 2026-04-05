@@ -1,6 +1,7 @@
-import json
 from  borsaitaliana import borsa_italiana
-
+import traceback
+import logging
+"""
 class Scraper:
 
     def __init__(self):
@@ -14,23 +15,9 @@ class Scraper:
 
 def load_file(f):
     pass
+"""
 
-
-isin='XS2419364653'
-market='MOT'
-
-p = f"www/eod/xmil/{isin}.json"
-f = open(p, "r")
-j = json.load(f)
-f.close()
-d1 = {}
-for date, price in j:
-    d1[date] = price
-
-print(len(d1))
-ultimo = j[-1][0]
-l = borsa_italiana(isin, market, ultimo)
-for date, price in l:
-    d1[date] = price
-
-print(len(d1))
+# --- ESEMPIO D'USO ---
+if __name__ == "__main__":
+    code='DE0001102408'
+    market='MOT'

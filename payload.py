@@ -17,13 +17,11 @@ class Payload:
         'ToDate', 'UseDelay', 'KeyType', 'KeyType2', 'Language'
     )
 
-    def __init__(self, code, market, **kwargs):
+    def __init__(self, **kwargs):
         """
         Il costruttore accetta code, market e un numero variabile di parametri 
         sotto forma di key=value (kwargs).
         """
-        self.code = code
-        self.market = market
 
         tomorrow = get_tomorrow_midnight_epoch(BORSA_ITALIANA_TZI)
 
@@ -43,22 +41,21 @@ class Payload:
 
         # Dizionario dei validatori (mappa ogni chiave alla sua funzione di controllo)
         self._validators = {
-            'SampleTime'    : lambda v: v == "1d",
-            'TimeFrame'     : lambda v: v in ("1d", "1m", "3m", "6m", "1y", "3y", "5y"),
-            'RequestedDataSetType': lambda v: v == "ohlc",
-            'ChartPriceType': lambda v: v == "price",
-            'UseDelay'      : lambda v: v in (False, True),
-            'KeyType'       : lambda v: v == "Topic",
-            'KeyType2'      : lambda v: v == "Topic",
-            'Language'      : lambda v: v in ("en-US", "it-IT"),
-            'Key'           : lambda v: re.match('^.+\\..+$', v),
-            'Offset'        : lambda v: v >= 0,
+            'SampleTime'    : lambda v: isinstance(v, str) and v == "1d",
+            'TimeFrame'     : lambda v: isinstance(v, str) and v in ("1d", "1m", "3m", "6m", "1y", "3y", "5y"),
+            'RequestedDataSetType': lambda v: isinstance(v, str) and v == "ohlc",
+            'ChartPriceType': lambda v: isinstance(v, str) and v == "price",
+            'UseDelay'      : lambda v: isinstance(v, bool) and v in (False, True),
+            'KeyType'       : lambda v: isinstance(v, str) and v == "Topic",
+            'KeyType2'      : lambda v: isinstance(v, str) and v == "Topic",
+            'Language'      : lambda v: isinstance(v, str) and v in ("en-US", "it-IT"),
+            'Key'           : lambda v: isinstance(v, str) and re.match('^.+\\..+$', v),
+            'Offset'        : lambda v: isinstance(v, int) and v >= 0,
             'FromDate'      : lambda v: v is None or isinstance(v, int) or v >= 0 or v <= tomorrow,
             'ToDate'        : lambda v: v is None or isinstance(v, int) or v >= 0 or v <= tomorrow
         }
         # Costruzione del payload
         payload = kwargs.copy()
-        payload['Key'] = code + "." + market
         self._normalize_date_range_limit(payload, 'FromDate')
         self._normalize_date_range_limit(payload, 'ToDate')
         payload = self._set_payload_defaults(payload)
@@ -92,8 +89,6 @@ class Payload:
         return data_and_defaults
 
     def _validate_payload(self, data):
-        # Esempio con Valore Errato (ValueError)
-        # p3 = Payload(code="MSFT", market="US", TimeFrame="10y")
         validated_data = {}
 
         for key, value in data.items():
@@ -121,15 +116,14 @@ if __name__ == "__main__":
     try:
         # Esempio Corretto
         p1 = Payload(
-            code="XS2419364653", 
-            market="MOT", 
+            Key="XS2419364653.MOT", 
             TimeFrame="1y",
             FromDate=""
         )
         print(p1.json())
 
         # Esempio con Valore Errato (ValueError)
-        # p3 = Payload(code="MSFT", market="US", TimeFrame="10y")
+        # p3 = Payload(key="MSFT", TimeFrame="10y")
 
     except (Exception) as e:
         logging.error(traceback.format_exc())
