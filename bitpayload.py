@@ -104,7 +104,7 @@ class BitPayload:
             
         return validated_data
     
-    def json(self):
+    def payload(self):
         return {'request': self.data}
 
     def __repr__(self):
@@ -119,7 +119,7 @@ if __name__ == "__main__":
             TimeFrame="1y",
             FromDate=""
         )
-        print(p1.json())
+        print(p1.payload())
 
         # Esempio con Valore Errato (ValueError)
         # p3 = Payload(key="MSFT", TimeFrame="10y")

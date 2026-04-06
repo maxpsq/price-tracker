@@ -32,11 +32,11 @@ def borsa_italiana(tracker_code, from_date: str):
     try:
 
         payload = BitPayload(
-            Key=tracker_code,
-            TimeFrame="5y",
-            FromDate=from_date
+            Key = tracker_code,
+            TimeFrame = "5y",
+            FromDate = from_date
         )
-        response = post( URL, headers=HEADERS, json=payload.json() )
+        response = post( URL, headers=HEADERS, json=payload.payload() )
         #print( response.text)
         entries = []
         elems = json.loads( response.text ).get('d')

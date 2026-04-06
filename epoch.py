@@ -36,6 +36,17 @@ def date_to_unix_epoch(date_string: str) -> int:
         raise ValueError("Formato data non valido. Usa YYYY-MM-DD")
 
 
+def last_day_of_month(year, month):
+    last_days = [31, 30, 29, 28]
+    for day in last_days:
+        try:
+            end = datetime(year, month, day)
+        except ValueError:
+            continue
+        else:
+            return end.date()
+    return None
+
 
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
