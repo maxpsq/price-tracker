@@ -1,21 +1,28 @@
 import csv
-from bitclient import borsa_italiana
+from itertools import islice
 from tracker import track
 from clients import *
 
-def read_securities_csv(file_path):
-    with open(file_path, newline="", encoding="UTF-8") as filecsv:
-        lettore = csv.reader(filecsv, delimiter=";")
-        # header = next(lettore)
-        # print(header)
-        dati = [ (linea[0], linea[1]) for linea in lettore ]
+class CsvReader:
+    
+    def __init__(self, file_path, lines_to_skip = 0):
+        self.file_path = file_path
+        self.lines_to_skip = lines_to_skip
+        self.delimiter = ";"
 
-    return dati
+    def read(self):
+        with open(self.file_path, newline='', encoding='UTF-8') as filecsv:
+            wanted_lines = islice(filecsv, self.lines_to_skip, None)
+            lettore = csv.reader(wanted_lines, delimiter=self.delimiter)
+            dati = [ (linea[0], linea[1]) for linea in lettore ]
+
+        return dati
 
 
-def update(csv_file_path, wsc_lambda, out_path) -> None:
 
-    securities = read_securities_csv(csv_file_path)
+def update(csv_reader, wsc_lambda, out_path) -> None:
+
+    securities = csv_reader.read()
     client_args = []
     for fname, tracking_code in securities:
         p = f"{out_path}/{fname}.json"
@@ -29,4 +36,4 @@ def update(csv_file_path, wsc_lambda, out_path) -> None:
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
 
-    update('cfg/eod/xmil/securities.csv', wsclient_bit, 'www/eod/xmil')
+    update(CsvReader('cfg/eod/xmil/securities.csv'), wsclient_bit, 'www/eod/xmil')
