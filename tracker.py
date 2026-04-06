@@ -2,6 +2,7 @@ import json
 from  bitclient import borsa_italiana
 import traceback
 import logging
+from clients import *
 
 def track(file_path, ws_client):
     """
@@ -23,7 +24,9 @@ def track(file_path, ws_client):
                 data_dict[date] = price
                 last_closing = date
 
-            #last_closing = json_dict[-1][0]
+            # This can potentially raise a KeyError
+            # in the unlikely evento of an empty collection.
+            # last_closing = json_dict[-1][0]
     except FileNotFoundError:
         pass
     finally:
@@ -57,8 +60,5 @@ if __name__ == "__main__":
 #    market='MOT'
     p = "www/eod/xmil/XS2579483319.json"
     c = 'XS2579483319.MOT'
-
-    def wsc(ws_code):
-        return lambda start_since: borsa_italiana(ws_code, start_since)
     
-    track( p, wsc(c) )
+    track( p, wsclient_bit(c) )

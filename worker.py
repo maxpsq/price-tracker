@@ -1,6 +1,7 @@
 import csv
 from bitclient import borsa_italiana
 from tracker import track
+from clients import *
 
 def read_securities_csv(file_path):
     with open(file_path, newline="", encoding="UTF-8") as filecsv:
@@ -12,12 +13,7 @@ def read_securities_csv(file_path):
     return dati
 
 
-def wsc_bit(ws_code):
-    return lambda start_since: borsa_italiana(ws_code, start_since)
-
-
-
-def run(csv_file_path, wsc_lambda, out_path) -> None:
+def update(csv_file_path, wsc_lambda, out_path) -> None:
 
     securities = read_securities_csv(csv_file_path)
     client_args = []
@@ -32,4 +28,5 @@ def run(csv_file_path, wsc_lambda, out_path) -> None:
 
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
-    run('cfg/eod/xmil/securities.csv', wsc_bit, 'www/eod/xmil')
+
+    update('cfg/eod/xmil/securities.csv', wsclient_bit, 'www/eod/xmil')
