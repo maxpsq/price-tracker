@@ -5,10 +5,10 @@ from clients import *
 
 class CsvReader:
     
-    def __init__(self, file_path, lines_to_skip = 0):
+    def __init__(self, file_path, **kvargs):
         self.file_path = file_path
-        self.lines_to_skip = lines_to_skip
-        self.delimiter = ";"
+        self.lines_to_skip = kvargs.get('lines_to_skip', 0)
+        self.delimiter =  kvargs.get('delimiter', ";")
 
     def read(self):
         with open(self.file_path, newline='', encoding='UTF-8') as filecsv:
@@ -36,4 +36,6 @@ def update(csv_reader, wsc_lambda, out_path) -> None:
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
 
-    update(CsvReader('cfg/eod/xmil/securities.csv'), wsclient_bit, 'www/eod/xmil')
+    lines = CsvReader('cfg/eom/re/buy/areas.csv', lines_to_skip = 1).read()
+    print(lines)
+    #update(CsvReader('cfg/eod/xmil/securities.csv'), wsclient_bit, 'www/eod/xmil')
