@@ -36,6 +36,7 @@ def update(csv_reader, wsc_lambda, out_path) -> None:
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
 
-    lines = CsvReader('cfg/eom/re/buy/areas.csv', lines_to_skip = 1).read()
-    print(lines)
+    #lines = CsvReader('cfg/eom/re/buy/areas.csv', lines_to_skip = 1).read()
+    #print(lines)
     #update(CsvReader('cfg/eod/xmil/securities.csv'), wsclient_bit, 'www/eod/xmil')
+    update( CsvReader('cfg/eom/pension-funds/fondofonte.csv'), wsclient_fondofonte, 'www/eom/pension-funds' )
