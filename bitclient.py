@@ -7,6 +7,7 @@ import logging
 from bitpayload import BitPayload
 
 URL = 'https://charts.borsaitaliana.it/charts/services/ChartWService.asmx/GetPricesWithVolume'
+URL = 'https://charts.borsaitaliana.it/charts/services/ChartWService.asmx/GetPrices'
 
 HEADERS = {
     "Accept-Encoding": "gzip, deflate, br", 
@@ -14,7 +15,8 @@ HEADERS = {
     "Content-Type": "application/json; charset=utf-8",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0",
     "Accept-Language": "de,en-US;q=0.7,en;q=0.3", 
-    "Referer": "https://charts.borsaitaliana.it/charts/Bit/DetailedChart.aspx?mcode=TIT.I06613.TLX&lang=en",
+# Il referrer contiene il codice del prodotto.
+#    "Referer": "https://charts.borsaitaliana.it/charts/Bit/DetailedChart.aspx?mcode=TIT.I06613.TLX&lang=en",
     "X-Requested-With": "XMLHttpRequest", 
 #-H "Content-Length: 236",
     "Origin": "https://charts.borsaitaliana.it",
@@ -41,7 +43,9 @@ def borsa_italiana(tracker_code, from_date: str):
         entries = []
         elems = json.loads( response.text ).get('d')
         #exit()
-        for epoch, _, _, close, _, _, _ in elems:
+# GetPricesWithVolume
+#        for epoch, _, _, close, _, _, _ in elems:
+        for epoch, _, _, close, _, _ in elems:
             date = f"{datetime.fromtimestamp( epoch/1000, tz=ZoneInfo("Europe/Rome") ):%Y-%m-%d}"
             entries.append( [date, close] )
 
