@@ -1,6 +1,7 @@
 import os
 import sys
 import html
+import re
 
 def create_json_index(root_directory, output_file):
     # Verifica validità percorso
@@ -50,7 +51,7 @@ def create_json_index(root_directory, output_file):
 
                 for filename in json_files:
                     full_path = os.path.join(root, filename)
-                    file_url = f"file://{full_path}"
+                    file_url = f"https://maxpsq.github.io/price-tracker/{re.sub('^.*?/www/', '', full_path)}"
                     f.write(f"                <li>{html.escape('📄 ')}<a href='{file_url}'>{html.escape(filename)}</a></li>\n")
                 
                 f.write("            </ul>\n")
