@@ -1,49 +1,62 @@
 import re
 import traceback
 import logging
-import requests
+
+VALID_REGIONS = (
+    'valle-d-aosta',
+    'piemonte',
+    'liguria',
+    'lombardia',
+    'veneto',
+    'trentino-alto-adige',
+    'friuli-venezia-giulia',
+    'emilia-romagna',
+    'toscana',
+    'umbria',
+    'marche',
+    'lazio',
+    'abruzzo',
+    'campania',
+    'molise',
+    'puglia',
+    'sardegna',
+    'sicilia',
+    'calabria',
+    'basilicata'
+)
+
 
 class ImmobiliarePayload:
 
-    VALID_KEYS = ('__lang', 'path')
+    VALID_KEYS = ('path', 'nation-id', 'region-id', 'province-id', 'city-id', 'with-zones', 'contract')
 
-    REGIONE=(
-        'valle-d-aosta',
-        'piemonte',
-        'liguria',
-        'lombardia',
-        'veneto',
-        'trentino-alto-adige',
-        'friuli-venezia-giulia',
-        'emilia-romagna',
-        'toscana',
-        'umbria',
-        'marche',
-        'lazio',
-        'abruzzo',
-        'campania',
-        'molise',
-        'puglia',
-        'sardegna',
-        'sicilia',
-        'calabria',
-        'basilicata'
-    )
+    @staticmethod
+    def is_valid_region_id(id):
+        for r in VALID_REGIONS:
+            code = r[:3]  # lombardia -> lom
+            if id == code:
+                return True
+            
+        return False
 
     def __init__(self, **kwargs):
         """
-        Il costruttore accetta code, market e un numero variabile di parametri 
+        Il costruttore accetta un numero variabile di parametri 
         sotto forma di key=value (kwargs).
         """
 
         self._defaults = {
-            '__lang': "en"
+            'with-zones': "false"
         }
 
         # Dizionario dei validatori (mappa ogni chiave alla sua funzione di controllo)
         self._validators = {
-            '__lang'        : lambda v: isinstance(v, str) and v in ("de", "el", "en", "es", "fr", "it", "pt", "ru"),
-            'path'          : lambda v: isinstance(v, str) and re.match('^/[a-z-]+/[a-z-]+/[a-z-]+/$', v)
+            'contract'      : lambda v: isinstance(v, str) and re.match("^[12]$", v),
+            'nation-id'     : lambda v: isinstance(v, str) and re.match("^[A-Z]{2}$", v),
+            'region-id'     : lambda v: isinstance(v, str) and ImmobiliarePayload.is_valid_region_id(v),
+            'province-id'   : lambda v: isinstance(v, str) and re.match("^[A-Z]{2}$", v),
+            'city-id'       : lambda v: isinstance(v, str) and re.match("^[0-9]+$", v),
+            'with-zones'    : lambda v: isinstance(v, str) and re.match("^(false|true)$", v),
         }
 
         self._post_processors = {
@@ -107,7 +120,14 @@ if __name__ == "__main__":
     try:
         # Esempio Corretto
         p1 = ImmobiliarePayload(
-            path="/mercato-immobiliare/lombardia/landriano/"
+            path="/api-next/market-insights/prices/stats/", 
+            **{
+                "contract": "1",
+                "nation-id": "IT", 
+                "region-id": "val", 
+                "province-id": "AO", 
+                "city-id": "11937"
+            }
         )
         print(p1.payload())
 

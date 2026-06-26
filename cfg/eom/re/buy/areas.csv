@@ -1,14 +1,14 @@
 # prezzi in eur/m² in alcune località
-landriano_pv;lombardia,landriano;
-vidigulfo_pv;lombardia,vidigulfo;
-torrevecchia_pia_pv;lombardia,torrevecchia-pia;
-locate_di_triulzi_mi;lombardia,locate-di-triulzi;
-carpiano_mi;lombardia,carpiano;
-melegnano_mi;lombardia,melegnano;
-bascape_pv;lombardia,bascape;
-ceranova_pv;lombardia,ceranova;
-siziano_mi;lombardia,siziano;
-opera_mi;lombardia,opera;
-vizzolo_predabissi_mi;lombardia,vizzolo-predabissi;
-cerro_al_lambro_mi;lombardia,cerro-al-lambro;
-salerano_sul_lambro_lo;lombardia,salerano-sul-lambro;
+landriano_pv;IT,lom,PV,8271;
+vidigulfo_pv;IT,lom,PV,8369;
+torrevecchia_pia_pv;IT,lom,PV,8353;
+locate_di_triulzi_mi;IT,lom,MI,8030;
+carpiano_mi;IT,lom,MI,7978;
+melegnano_mi;IT,lom,MI,8038;
+bascape_pv;IT,lom,PV,8202;
+ceranova_pv;IT,lom,PV,8236;
+siziano_mi;IT,lom,MI,8343;
+opera_mi;IT,lom,MI,8053;
+vizzolo_predabissi_mi;IT,lom,MI,8121;
+cerro_al_lambro_mi;IT,lom,MI,7989;
+salerano_sul_lambro_lo;IT,lom,LO,7920;

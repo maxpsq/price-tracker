@@ -12,7 +12,7 @@ def track(file_path, ws_client):
     """
 
     data_dict = {}          # A dict structure meant for merging data
-    last_closing = None     # Las closing day found in the file
+    last_closing = None     # Last closing day found in the file
     file = None             # A file object
     try:
         file = open(file_path, "r")
