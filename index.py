@@ -2,6 +2,7 @@ import os
 import sys
 import html
 import re
+from datetime import datetime
 
 def create_json_index(root_directory, output_file):
     # Verifica validità percorso
@@ -24,6 +25,9 @@ def create_json_index(root_directory, output_file):
             f.write("        .folder-path { background: #37373d; padding: 6px 12px; font-weight: bold; color: #9cdcfe; font-size: 0.85em; border-left: 4px solid #4ec9b0; margin-bottom: 10px; }\n")
             f.write("        ul { list-style: none; padding-left: 15px; }\n")
             f.write("        li { margin: 4px 0; }\n")
+            f.write("        .file-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; }\n")
+            f.write("        .file-name { flex: 1; }\n")
+            f.write("        .file-modified { color: #6a9955; font-size: 0.8em; white-space: nowrap; margin-left: auto; }\n")
             f.write("        a { text-decoration: none; color: #ce9178; }\n")
             f.write("        a:hover { color: #d7ba7d; text-decoration: underline; }\n")
             f.write("        .count { color: #6a9955; font-size: 0.8em; margin-left: 10px; }\n")
@@ -52,7 +56,11 @@ def create_json_index(root_directory, output_file):
                 for filename in json_files:
                     full_path = os.path.join(root, filename)
                     file_url = f"https://maxpsq.github.io/price-tracker/{re.sub('^.*?/www/', '', full_path)}"
-                    f.write(f"                <li>{html.escape('📄 ')}<a href='{file_url}'>{html.escape(filename)}</a></li>\n")
+                    modified_time = datetime.fromtimestamp(os.path.getmtime(full_path)).strftime("%d/%m/%Y %H:%M")
+                    f.write(f"                <li class='file-item'>\n")
+                    f.write(f"                    <span class='file-name'>{html.escape('📄 ')}<a href='{file_url}'>{html.escape(filename)}</a></span>\n")
+                    f.write(f"                    <span class='file-modified'>{html.escape(modified_time)}</span>\n")
+                    f.write(f"                </li>\n")
                 
                 f.write("            </ul>\n")
                 f.write("        </div>\n")
