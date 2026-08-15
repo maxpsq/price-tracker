@@ -29,7 +29,6 @@ jobs:
       - name: Run EOM quotes getter
         run: |
           message="EOM quotes update `date '+%Y-%m-%d'`"
-          git pull --rebase
           
           python main_eom.py
           
