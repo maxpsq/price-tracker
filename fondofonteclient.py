@@ -18,7 +18,7 @@ def url(comparto):
     return f"https://www.fondofonte.it/gestione-finanziaria/i-valori-quota-dei-comparti/{comparto}/"
 
 
-def fondo_fonte(comparto: str):
+def fondo_fonte(comparto: str) -> list|None:
 
     try:
         response = get( url(comparto) )
@@ -52,7 +52,7 @@ def fondo_fonte(comparto: str):
 
     except (Exception) as e:
         logging.error(traceback.format_exc())
-
+        return None
 
 def _month_to_number(month_as_word):
     convert = {

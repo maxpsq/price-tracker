@@ -1,10 +1,9 @@
 import json
-from  bitclient import borsa_italiana
 import traceback
 import logging
 from clients import *
 
-def track(file_path, ws_client):
+def track(file_path, ws_client) -> None:
     """
     Read the price data set from a file and ask a web service
     to provide the prices starting from the last date found.
@@ -33,12 +32,10 @@ def track(file_path, ws_client):
         if file is not None:
             file.close()
 
-    try:
-        new_data = ws_client(last_closing)  # New data from the data provider
-    except (Exception) as e:
-        logging.error(traceback.format_exc())
+    new_data = ws_client(last_closing)  # New data from the data provider
+    if new_data is None:
         return
-
+    
     for date, price in new_data:
         data_dict[date] = price
 
@@ -56,13 +53,14 @@ def track(file_path, ws_client):
         if file is not None:
             file.close()
 
-
+    return None
 
 # --- ESEMPIO D'USO ---
 if __name__ == "__main__":
-#    code='DE0001102408'
-#    market='MOT'
-    p = "www/eod/xmil/XS2579483319.json"
-    c = 'XS2579483319.MOT'
+#    p = "www/eod/xmil/XS2579483319.json"
+#    c = 'XS2579483319.MOT'
+#    track( p, wsclient_bit(c) )
     
-    track( p, wsclient_bit(c) )
+    p = "www/eom/pension-funds/fonte-garantito.json"
+    c = 'comparto-garantito'
+    track( p, wsclient_fondofonte(c) )
