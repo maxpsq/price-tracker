@@ -25,7 +25,7 @@ def track(file_path, ws_client):
                 last_closing = date
 
             # This can potentially raise a KeyError
-            # in the unlikely evento of an empty collection.
+            # in the unlikely event of an empty collection.
             # last_closing = json_dict[-1][0]
     except FileNotFoundError:
         pass
@@ -33,7 +33,11 @@ def track(file_path, ws_client):
         if file is not None:
             file.close()
 
-    new_data = ws_client(last_closing)  # New data from the data provider
+    try:
+        new_data = ws_client(last_closing)  # New data from the data provider
+    except (Exception) as e:
+        logging.error(traceback.format_exc())
+        return
 
     for date, price in new_data:
         data_dict[date] = price
